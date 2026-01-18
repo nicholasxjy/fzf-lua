@@ -276,8 +276,11 @@ M.fzf_wrap = function(cmd, opts, convert_actions)
     local xpcall = jit and xpcall or
         (utils.__HAS_NVIM_010 and require("coxpcall") or require("fzf-lua.lib.copcall")).xpcall
     local _, err = xpcall(function()
+      vim.print(vim.inspect(opts))
+      vim.print(vim.inspect(cmd))
       if type(opts.cb_co) == "function" then opts.cb_co(_co) end
       local selected, exit_code = M.fzf(cmd, opts)
+      vim.print(vim.inspect(exit_code))
       -- If aborted (e.g. unhide process kill), do nothing
       if not exit_code or not selected then return end
       -- Default fzf exit callback acts upon the selected items
