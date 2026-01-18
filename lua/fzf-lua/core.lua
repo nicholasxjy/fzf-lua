@@ -242,6 +242,9 @@ end
 M.fzf_resume = function(opts)
   -- First try to unhide the window
   if win.unhide() then return end
+  vim.print("__resume_data")
+  vim.print(vim.inspect(config.__resume_data))
+
   if not config.__resume_data or not config.__resume_data.contents then
     utils.info("No resume data available.")
     return
@@ -252,6 +255,7 @@ M.fzf_resume = function(opts)
   -- resume a picker when using "hide" and no_resume=true (#2425)
   local query = utils.map_get(opts, opts.is_live and "__call_opts.search" or "__call_opts.query")
   if query and #query > 0 then opts.query = query end
+  vim.print("__resume_data.opts")
   vim.print(vim.inspect(config.__resume_data.opts))
   M.fzf_wrap(assert(config.__resume_data.contents), config.__resume_data.opts)
 end
@@ -261,7 +265,9 @@ end
 ---@param convert_actions boolean?
 ---@return thread?, string, table
 M.fzf_wrap = function(cmd, opts, convert_actions)
+  vim.print("cmd")
   vim.print(vim.inspect(cmd))
+  vim.print("opts")
   vim.print(vim.inspect(opts))
 
   opts = opts or {}
@@ -282,6 +288,7 @@ M.fzf_wrap = function(cmd, opts, convert_actions)
     local _, err = xpcall(function()
       if type(opts.cb_co) == "function" then opts.cb_co(_co) end
       local selected, exit_code = M.fzf(cmd, opts)
+      vim.print("exit_code")
       vim.print(vim.inspect(exit_code))
       -- If aborted (e.g. unhide process kill), do nothing
       if not exit_code or not selected then return end
