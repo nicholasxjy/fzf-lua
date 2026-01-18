@@ -250,10 +250,9 @@ M.fzf_resume = function(opts)
   assert(opts == config.__resume_data.opts)
   opts.cwd = opts.cwd and libuv.expand(opts.cwd) or nil
   -- resume a picker when using "hide" and no_resume=true (#2425)
-  vim.print(vim.inspect(opts))
   local query = utils.map_get(opts, opts.is_live and "__call_opts.search" or "__call_opts.query")
-  vim.print(vim.inspect(query))
   if query and #query > 0 then opts.query = query end
+  vim.inspect(config.__resume_data.opts)
   M.fzf_wrap(assert(config.__resume_data.contents), config.__resume_data.opts)
 end
 
@@ -262,6 +261,9 @@ end
 ---@param convert_actions boolean?
 ---@return thread?, string, table
 M.fzf_wrap = function(cmd, opts, convert_actions)
+  vim.inspect(cmd)
+  vim.inspect(opts)
+
   opts = opts or {}
   M.set_header(opts)
   if convert_actions and type(opts.actions) == "table" then
