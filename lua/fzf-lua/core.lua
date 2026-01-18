@@ -250,7 +250,9 @@ M.fzf_resume = function(opts)
   assert(opts == config.__resume_data.opts)
   opts.cwd = opts.cwd and libuv.expand(opts.cwd) or nil
   -- resume a picker when using "hide" and no_resume=true (#2425)
+  vim.print(vim.inspect(opts))
   local query = utils.map_get(opts, opts.is_live and "__call_opts.search" or "__call_opts.query")
+  vim.print(vim.inspect(query))
   if query and #query > 0 then opts.query = query end
   M.fzf_wrap(assert(config.__resume_data.contents), config.__resume_data.opts)
 end
@@ -276,7 +278,7 @@ M.fzf_wrap = function(cmd, opts, convert_actions)
     local xpcall = jit and xpcall or
         (utils.__HAS_NVIM_010 and require("coxpcall") or require("fzf-lua.lib.copcall")).xpcall
     local _, err = xpcall(function()
-      vim.print(vim.inspect(opts))
+      vim.print(vim.inspect(opts.query))
       vim.print(vim.inspect(cmd))
       if type(opts.cb_co) == "function" then opts.cb_co(_co) end
       local selected, exit_code = M.fzf(cmd, opts)
