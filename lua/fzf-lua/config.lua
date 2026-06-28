@@ -781,11 +781,12 @@ function M.normalize_opts(opts, globals, __resume_key) ---@diagnostic disable
               ["--scrollbar"]      = false,
               ["--no-scrollbar"]   = false,
               ["--wrap"]           = true,
-              ["--wrap-sign"]      = true,
-              ["--highlight-line"] = false,
-              ["--gutter"]         = false,
-              ["--border-label"]   = false,
-              ["--ellipsis"]       = true,
+              ["--wrap-sign"]         = true,
+              ["--highlight-line"]    = false,
+              ["--gutter"]            = false,
+              ["--marker-multi-line"] = true,
+              ["--border-label"]      = false,
+              ["--ellipsis"]          = true,
             }
           },
         }
@@ -802,7 +803,7 @@ function M.normalize_opts(opts, globals, __resume_key) ---@diagnostic disable
               ["--highlight-line"] = true,
             }
           },
-          ["0.53"] = { fzf_opts = { ["--tmux"] = true } },
+          ["0.53"] = { fzf_opts = { ["--tmux"] = true, ["--marker-multi-line"] = true } },
           ["0.52"] = { fzf_opts = { ["--highlight-line"] = true } },
           ["0.42"] = {
             fzf_opts = {

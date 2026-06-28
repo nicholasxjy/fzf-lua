@@ -2,8 +2,22 @@ local helpers = require("fzf-lua.test.helpers")
 local assert = helpers.assert
 
 local parse = require("fzf-lua.config.parse")
+local config = require("fzf-lua.config")
+local utils = require("fzf-lua.utils")
 local eq = assert.are.equal
 local same = assert.are.same
+
+local with_fzf_version = function(version, fn)
+  local fzf_version = utils.fzf_version
+  utils.fzf_version = function()
+    return version, 0
+  end
+  local ok, err = pcall(fn)
+  utils.fzf_version = fzf_version
+  if not ok then
+    error(err)
+  end
+end
 
 describe("Testing config parser", function()
   it("parses empty and simple strings", function()
@@ -93,5 +107,19 @@ describe("Testing config parser", function()
     -- When tokenizing multiple '='
     res = parse.parse([[--bind='ctrl-a:execute(echo "==")']])
     same(res, { ["--bind"] = [[ctrl-a:execute(echo "==")]] })
+  end)
+
+  it("keeps diagnostics multiline marker with supported fzf", function()
+    with_fzf_version({ 0, 53, 0 }, function()
+      local opts = config.normalize_opts({}, "diagnostics")
+      eq(opts.fzf_opts["--marker-multi-line"], "╻  ")
+    end)
+  end)
+
+  it("removes diagnostics multiline marker with unsupported fzf", function()
+    with_fzf_version({ 0, 52, 0 }, function()
+      local opts = config.normalize_opts({}, "diagnostics")
+      eq(opts.fzf_opts["--marker-multi-line"], nil)
+    end)
   end)
 end)

@@ -1788,8 +1788,9 @@ M.defaults.diagnostics = {
   diag_code      = true,
   multiline      = 2, ---@type integer|boolean
   fzf_opts       = {
-    ["--multi"] = true,
-    ["--wrap"]  = true,
+    ["--multi"]             = true,
+    ["--wrap"]              = true,
+    ["--marker-multi-line"] = "╻  ",
   },
   _actions       = function() return M.globals.actions.files end,
   _cached_hls    = { "path_colnr", "path_linenr" },
